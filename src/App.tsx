@@ -152,7 +152,7 @@ const App = () => {
             {renderSumBox(750)}
           </GridItem>
           <GridItem
-            bgImage="url('/src/assets/BG_main_DorND.png')"
+            bgImage="url('/assets/BG_main_DorND.png')"
             backgroundPosition="center"
             backgroundRepeat="no-repeat"
           >
