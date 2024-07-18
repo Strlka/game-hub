@@ -89,7 +89,7 @@ const App = () => {
       setFirstClickedIndex(index);
     } else {
       const nextCaseNumber = caseNumber > 26 ? 1 : caseNumber;
-      const url = `public/src/assets/Photo_game/${nextCaseNumber}.jpeg`;
+      const url = `/src/assets/Photo_game/${nextCaseNumber}.jpeg`;
       const windowFeatures = "width=600,height=900,left=400,top=100";
       window.open(url, "_blank", windowFeatures);
 
