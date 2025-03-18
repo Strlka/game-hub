@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { ChakraProvider, Grid, GridItem } from "@chakra-ui/react";
 import LeftRightBoxes from "./Components/LeftRightBoxes";
 import CentralBoxes from "./Components/CentralBoxes";
@@ -8,30 +7,13 @@ import Prize from "./Components/Prize";
 import BoxWithImage from "./Components/BoxWithImage";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./store";
-import { onButtonClick, setClickedButtons } from "./ReduxStateSlices/clickedButtonsSlice";
-import { setOpenedPhotos } from "./ReduxStateSlices/openedPhotosSlice";
-import { setFirstClickedIndex } from "./ReduxStateSlices/firstClickedIndexSlice";
-import { resetShowOffer, setShowOffer } from "./ReduxStateSlices/showOfferSlice";
-import { resetShowFinalOffer, setShowFinalOffer } from "./ReduxStateSlices/showFinalOfferSlice";
-import { resetShowCards, setShowCards } from "./ReduxStateSlices/showCardsSlice";
+import { onButtonClick } from "./ReduxStateSlices/clickedButtonsSlice";
+import { resetShowOffer } from "./ReduxStateSlices/showOfferSlice";
+import { resetShowFinalOffer } from "./ReduxStateSlices/showFinalOfferSlice";
+import { setShowCards } from "./ReduxStateSlices/showCardsSlice";
 import { setShowPrize } from "./ReduxStateSlices/showPrizeSlice";
-import { setShowPhoto } from "./ReduxStateSlices/showPhotoSlice";
-import { onImgClose, resetShowImg, setShowImg } from "./ReduxStateSlices/showImgSlice";
-import { setSums } from "./ReduxStateSlices/sumsSlice";
+import { onImgClose } from "./ReduxStateSlices/showImgSlice";
 
-
-
-// type ActionName = 
-// 'BoxClick' |
-// 'ShowImg' |
-// 'CloseImg' |
-// 'ShowOffer' |
-// 'CloseOffer' |
-// 'TakeOffer' |
-// 'ShowPrize' |
-// 'ShowLastSum' |
-// 'Init' |
-// 'ReStart';
 
 
 const App = () => {
@@ -51,38 +33,6 @@ const App = () => {
 
   const sumForBox = useSelector((state: RootState) => state.sums.sortValue);
 
-  // const sumForBox = useMemo(() => {
-  //   return sums.map(value => ({ value, sort: Math.random() }))
-  //   .sort((a, b) => a.sort - b.sort)
-  //   .map(({ value }) => value)
-  // }, [])
-
-
-  // const handleClick = (index: number) => {
-  //   if (firstClickedIndex === null) {
-  //     dispatch(setFirstClickedIndex(index));
-  //   } else {
-
-  //     const pickAndRemoveRandom = (arr: number[], index: number): number | null => {
-
-  //       if (arr.length === 0) return null; // Если массив пуст, возвращаем null
-
-  //       dispatch(setSums(arr.filter(item => item !== sumForBox[index])));
-  //       return sumForBox[index];
-  //     };
-
-  //     const sum = pickAndRemoveRandom(sums, index);
-  //     dispatch(setShowPhoto(sum));
-  //     dispatch(setShowImg());
-
-  //     if (sum !== null) {
-  //     dispatch(setOpenedPhotos(sum));
-  //     }
-
-  //   }
-  //     dispatch(setClickedButtons(index));
-      
-  //   };
 
   const handleClick = (index: number) => {
     dispatch(onButtonClick(index));
@@ -105,25 +55,7 @@ const App = () => {
     }
   };
 
-  // const onImgClose = () => {
-  //   if (sums.length === 21 || 
-  //     sums.length === 16 || 
-  //     sums.length === 12 || 
-  //     sums.length === 9 || 
-  //     sums.length === 7 || 
-  //     sums.length === 6 || 
-  //     sums.length === 5 || 
-  //     sums.length === 4 || 
-  //     sums.length === 3 ||
-  //     sums.length === 2 ) {
-  //       dispatch(setShowOffer()); dispatch(resetShowCards());
-  //     }
-  //     if (sums.length === 1) {
-  //       dispatch(setShowFinalOffer()); dispatch(resetShowCards());
-  //     }
-  //     dispatch(resetShowImg());
-  // };
-
+ 
   const handleImgClose = () => {
     dispatch(onImgClose());
   };

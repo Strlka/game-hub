@@ -9,6 +9,8 @@ export const initImgCloseMiddleware = () => {
     
     const imgClosekMiddleware = createListenerMiddleware();
     const startListening = imgClosekMiddleware.startListening.withTypes<RootState, AppDispatch>();
+    const soundBankerIsCalling = new Audio('src/assets/Sounds/the-banker-is-calling-phone-101soundboards.mp3');
+    const soundDealOrNoDeal = new Audio('src/assets/Sounds/deal-or-no-deal-agreement-contract-compromise-arrangement-offer-101soundboards.mp3');
 
     startListening ({
         actionCreator: onImgClose,
@@ -24,7 +26,14 @@ export const initImgCloseMiddleware = () => {
                 sums.length === 4 || 
                 sums.length === 3 ||
                 sums.length === 2 ) {
-                  listenerApi.dispatch(setShowOffer()); listenerApi.dispatch(resetShowCards());
+                  soundBankerIsCalling.play();
+                  setTimeout(() => {
+                    listenerApi.dispatch(setShowOffer()); 
+                    listenerApi.dispatch(resetShowCards());
+                    setTimeout(() => {
+                      soundDealOrNoDeal.play();
+                    }, 1500);
+                  }, 1500);
                 }
                 if (sums.length === 1) {
                   listenerApi.dispatch(setShowFinalOffer()); listenerApi.dispatch(resetShowCards());

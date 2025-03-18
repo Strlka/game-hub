@@ -20,7 +20,8 @@ export const initBoxClickMiddleware = () => {
 
             if (firstClickedIndex === null) {
                 listenerApi.dispatch(setFirstClickedIndex(action.payload));
-              } else {
+                listenerApi.dispatch(setClickedButtons(action.payload));
+              } else if (firstClickedIndex !== action.payload) {
           
                 const pickAndRemoveRandom = (arr: number[], index: number): number | null => {
           
@@ -31,16 +32,34 @@ export const initBoxClickMiddleware = () => {
                 };
           
                 const sum = pickAndRemoveRandom(sums, action.payload);
-                listenerApi.dispatch(setShowPhoto(sum));
-                listenerApi.dispatch(setShowImg());
+
+                  listenerApi.dispatch(setShowPhoto(sum));
+                  listenerApi.dispatch(setShowImg());
+         
           
                 if (sum !== null) {
                 listenerApi.dispatch(setOpenedPhotos(sum));
                 }
-          
-              }
- 
                 listenerApi.dispatch(setClickedButtons(action.payload));
+              } else if (sums.length === 2) {
+                const pickAndRemoveRandom = (arr: number[], index: number): number | null => {
+          
+                  if (arr.length === 0) return null; // Если массив пуст, возвращаем null
+          
+                  listenerApi.dispatch(setSums(arr.filter(item => item !== listenerApi.getState().sums.sortValue[index])));
+                  return listenerApi.getState().sums.sortValue[index];
+                };
+          
+                const sum = pickAndRemoveRandom(sums, action.payload);
+
+                  listenerApi.dispatch(setShowPhoto(sum));
+                  listenerApi.dispatch(setShowImg());
+
+                if (sum !== null) {
+                listenerApi.dispatch(setOpenedPhotos(sum));
+                }
+                listenerApi.dispatch(setClickedButtons(action.payload));
+              }
                 
               },
         })

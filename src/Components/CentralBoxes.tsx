@@ -57,15 +57,19 @@ const CentralBoxes = ({clickedButtons, firstClickedIndex, sums, handleClick} : P
               
             >
               {boxPositionList.map(({ row, colStart }, index) => {
+                const isFirstClicked = firstClickedIndex === index;
+                const isClicked = clickedButtons[index];
                 return (
                   <Box
                     as="button"
                     key={index}
                     onClick={() => handleClick(index)}
-                    disabled={clickedButtons[index] && firstClickedIndex !== index } 
+                    disabled={isClicked && !isFirstClicked}
                     bg={
-                      clickedButtons[index] 
-                        ? (firstClickedIndex === index && (sums.length > 1 || sums[0] !== sums[firstClickedIndex]))
+                      clickedButtons[index]
+                        ? firstClickedIndex === index &&
+                          (sums.length > 1 ||
+                            sums[0] !== sums[firstClickedIndex])
                           ? "yellow.300"
                           : "gray.50"
                         : "gray.400"
@@ -85,7 +89,7 @@ const CentralBoxes = ({clickedButtons, firstClickedIndex, sums, handleClick} : P
                     gridColumnStart={colStart}
                     gridRowStart={row}
                   >
-                    {index + 1} 
+                    {index + 1}
                   </Box>
                 );
               })}
