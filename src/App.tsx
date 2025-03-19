@@ -13,6 +13,8 @@ import { resetShowFinalOffer } from "./ReduxStateSlices/showFinalOfferSlice";
 import { setShowCards } from "./ReduxStateSlices/showCardsSlice";
 import { setShowPrize } from "./ReduxStateSlices/showPrizeSlice";
 import { onImgClose } from "./ReduxStateSlices/showImgSlice";
+import { playAudioSegment } from "./Audio";
+import { onClickDeal, onClickNoDeal } from "./DorNDMiddleware";
 
 
 
@@ -61,8 +63,10 @@ const App = () => {
   };
 
 
-  const onClickDeal = () => {dispatch(setShowPrize()); dispatch(resetShowOffer())};
-  const onClickNoDeal = () => {dispatch(resetShowOffer()); dispatch(setShowCards())};
+  const onClickDeall = () => {dispatch(onClickDeal())};
+  const onClickNoDeall = () => {dispatch(onClickNoDeal())};
+
+
   const onClickPrize =() => {dispatch(setShowPrize()); dispatch(resetShowFinalOffer())};
 
 
@@ -86,7 +90,7 @@ const App = () => {
               <BoxWithImage showPhoto={showPhoto} onImgClose={handleImgClose} />
             }
             { showOffer &&
-              <Offer offer={offer} onClickDeal={onClickDeal} onClickNoDeal={onClickNoDeal} />
+              <Offer offer={offer} onClickDeal={onClickDeall} onClickNoDeal={onClickNoDeall} />
             }
             { showFinalOffer &&
               <FinalOffer offer={offer} onClickPrize={onClickPrize} />

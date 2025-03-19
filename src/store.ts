@@ -11,6 +11,7 @@ import showImgReducer from './ReduxStateSlices/showImgSlice'
 import sumsReducer from './ReduxStateSlices/sumsSlice'
 import { initBoxClickMiddleware } from './BoxClickMiddleware'
 import { initImgCloseMiddleware } from './ImgCloseMiddleware'
+import { initDorNDMiddleware } from './DorNDMiddleware'
 
 export const store = configureStore({
   reducer: {
@@ -27,7 +28,7 @@ export const store = configureStore({
   },
   devTools: true,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().prepend(initBoxClickMiddleware(), initImgCloseMiddleware()),
+    getDefaultMiddleware().prepend(initBoxClickMiddleware(), initImgCloseMiddleware(), initDorNDMiddleware()),
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
