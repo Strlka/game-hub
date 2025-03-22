@@ -5,7 +5,7 @@ export interface showCardsState {
 }
 
 const initialState: showCardsState = {
-  value: true,
+  value: false,
 }
 
 export const showCardsSlice = createSlice({

@@ -1,4 +1,7 @@
 import { Box, Grid } from "@chakra-ui/react";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { audioMainTheme, playAudioSegment } from "../Audio";
 
 interface Props {
     clickedButtons: boolean[];
@@ -7,8 +10,27 @@ interface Props {
     handleClick: (index: number) => void;
   }
 
+const MotionBox = motion(Box);
 
 const CentralBoxes = ({clickedButtons, firstClickedIndex, sums, handleClick} : Props) => {
+
+  const [visibleBoxes, setVisibleBoxes] = useState<number[]>([]);
+
+  useEffect(() => {
+    const delay = 450; // Задержка между появлением каждого элемента
+    boxPositionList.forEach((_, index) => {
+        setTimeout(() => {
+            audioMainTheme.play();
+            setVisibleBoxes((prev) => [...prev, index]);
+            if (index === boxPositionList.length - 1) {
+              setTimeout(() => {
+                  audioMainTheme.pause();
+                  playAudioSegment(5, 8);
+              }, delay); // Небольшая задержка для корректного завершения
+          }
+        }, index * delay);
+    });
+}, []);
 
 
     const boxPositionList = [
@@ -59,12 +81,17 @@ const CentralBoxes = ({clickedButtons, firstClickedIndex, sums, handleClick} : P
               {boxPositionList.map(({ row, colStart }, index) => {
                 const isFirstClicked = firstClickedIndex === index;
                 const isClicked = clickedButtons[index];
+                const isVisible = visibleBoxes.includes(index);
                 return (
-                  <Box
+                  <MotionBox
                     as="button"
                     key={index}
                     onClick={() => handleClick(index)}
-                    disabled={isClicked && !isFirstClicked}
+                    pointerEvents={isClicked && !isFirstClicked ? "none" : "auto"}
+                    _disabled={{ opacity: 0.5, cursor: "not-allowed" }}
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={isVisible ? { opacity: 1, scale: 1 } : {}}
+                    transition={{ duration: 0.5 }}
                     bg={
                       clickedButtons[index]
                         ? firstClickedIndex === index &&
@@ -90,7 +117,7 @@ const CentralBoxes = ({clickedButtons, firstClickedIndex, sums, handleClick} : P
                     gridRowStart={row}
                   >
                     {index + 1}
-                  </Box>
+                  </MotionBox>
                 );
               })}
             </Grid>
@@ -98,3 +125,5 @@ const CentralBoxes = ({clickedButtons, firstClickedIndex, sums, handleClick} : P
 }
 
 export default CentralBoxes
+
+

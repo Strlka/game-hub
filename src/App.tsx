@@ -8,13 +8,13 @@ import BoxWithImage from "./Components/BoxWithImage";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./store";
 import { onButtonClick } from "./ReduxStateSlices/clickedButtonsSlice";
-import { resetShowOffer } from "./ReduxStateSlices/showOfferSlice";
 import { resetShowFinalOffer } from "./ReduxStateSlices/showFinalOfferSlice";
-import { setShowCards } from "./ReduxStateSlices/showCardsSlice";
 import { setShowPrize } from "./ReduxStateSlices/showPrizeSlice";
 import { onImgClose } from "./ReduxStateSlices/showImgSlice";
-import { playAudioSegment } from "./Audio";
 import { onClickDeal, onClickNoDeal } from "./DorNDMiddleware";
+import { useState } from "react";
+import StartScreen from "./Components/StartScreen";
+import { setShowCards } from "./ReduxStateSlices/showCardsSlice";
 
 
 
@@ -35,6 +35,11 @@ const App = () => {
 
   const sumForBox = useSelector((state: RootState) => state.sums.sortValue);
 
+  const [showStartScreen, hideStartScreen] = useState(true);
+  const onClickStart = () => { 
+    hideStartScreen(false); 
+    dispatch(setShowCards());
+  }
 
   const handleClick = (index: number) => {
     dispatch(onButtonClick(index));
@@ -56,7 +61,7 @@ const App = () => {
     offer = Math.floor(sums.reduce((sum, current) => sum + current) / sums.length);
     }
   };
-
+ 
  
   const handleImgClose = () => {
     dispatch(onImgClose());
@@ -68,6 +73,8 @@ const App = () => {
 
 
   const onClickPrize =() => {dispatch(setShowPrize()); dispatch(resetShowFinalOffer())};
+
+
 
 
   return (
@@ -83,6 +90,9 @@ const App = () => {
             backgroundPosition="center"
             backgroundRepeat="no-repeat"
           >
+            {showStartScreen &&  
+              <StartScreen hideStartScreen={onClickStart}/>
+            }
             {showCards &&
               <CentralBoxes clickedButtons={clickedButtons} firstClickedIndex={firstClickedIndex} sums={sums} handleClick={handleClick} />
             }

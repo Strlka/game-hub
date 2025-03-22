@@ -4,7 +4,7 @@ import { onImgClose, resetShowImg } from "./ReduxStateSlices/showImgSlice";
 import { resetShowOffer, setShowOffer } from "./ReduxStateSlices/showOfferSlice";
 import { resetShowCards } from "./ReduxStateSlices/showCardsSlice";
 import { setShowFinalOffer } from "./ReduxStateSlices/showFinalOfferSlice";
-import { playAudioSegment } from "./Audio";
+import { audioThinking, playAudioSegment } from "./Audio";
 
 export const initImgCloseMiddleware = () => {
     
@@ -19,6 +19,19 @@ export const initImgCloseMiddleware = () => {
         effect: async (action, listenerApi) => {
           listenerApi.cancelActiveListeners();
             const sums = listenerApi.getState().sums.value;
+            const forkOnImgCloseSound = listenerApi.fork(async (forkApi) => {
+              if (sums.length !== 21 && 
+                sums.length !== 16 && 
+                sums.length !== 12 && 
+                sums.length !== 9 && 
+                sums.length !== 7 &&
+                sums.length !== 6 &&
+                sums.length !== 5 && 
+                sums.length !== 4 &&
+                sums.length !== 2 ) {
+                  audioThinking.play();
+                }
+            }); 
             const forkFnMain = listenerApi.fork(async (forkApi) => {
             if (sums.length === 21 || 
                 sums.length === 16 || 
@@ -28,7 +41,6 @@ export const initImgCloseMiddleware = () => {
                 sums.length === 6 || 
                 sums.length === 5 || 
                 sums.length === 4 || 
-                sums.length === 2 ||
                 sums.length === 2 ) {
                   soundBankerIsCalling.play();
                   listenerApi.dispatch(resetShowCards());
@@ -49,7 +61,7 @@ export const initImgCloseMiddleware = () => {
                   //     playAudioSegment(20, 23);
                   //   }, 1000);
                   // }, 1500);
-                const forkFntwo = listenerApi.fork(async (forkApi) => {
+                const forkFnSumsLengthTwo = listenerApi.fork(async (forkApi) => {
                 if (sums.length === 3) {
 
                   soundBankerIsCalling.play();
@@ -60,7 +72,7 @@ export const initImgCloseMiddleware = () => {
                   playAudioSegment(20, 23);
                 }
               });
-              const forkFnone = listenerApi.fork(async (forkApi) => {
+              const forkFnSumsLengthOne = listenerApi.fork(async (forkApi) => {
                 if (sums.length === 1) {
                   listenerApi.dispatch(setShowFinalOffer()); listenerApi.dispatch(resetShowCards());
                 }
@@ -69,7 +81,7 @@ export const initImgCloseMiddleware = () => {
               listenerApi.dispatch(resetShowImg());
                 
 
-              await Promise.all([forkFnMain.result, forkFntwo.result, forkFnone.result]);
+              await Promise.all([forkFnMain.result, forkFnSumsLengthTwo.result, forkFnSumsLengthOne.result, forkOnImgCloseSound.result]);
 
               },
         })

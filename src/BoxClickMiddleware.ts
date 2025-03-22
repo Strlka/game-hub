@@ -6,6 +6,7 @@ import { setSums } from "./ReduxStateSlices/sumsSlice";
 import { setShowPhoto } from "./ReduxStateSlices/showPhotoSlice";
 import { setShowImg } from "./ReduxStateSlices/showImgSlice";
 import { setOpenedPhotos } from "./ReduxStateSlices/openedPhotosSlice";
+import { audioThinking } from "./Audio";
 
 export const initBoxClickMiddleware = () => {
     
@@ -33,8 +34,9 @@ export const initBoxClickMiddleware = () => {
           
                 const sum = pickAndRemoveRandom(sums, action.payload);
 
-                  listenerApi.dispatch(setShowPhoto(sum));
-                  listenerApi.dispatch(setShowImg());
+                audioThinking.pause();
+                listenerApi.dispatch(setShowPhoto(sum));
+                listenerApi.dispatch(setShowImg());
          
           
                 if (sum !== null) {
@@ -52,8 +54,9 @@ export const initBoxClickMiddleware = () => {
           
                 const sum = pickAndRemoveRandom(sums, action.payload);
 
-                  listenerApi.dispatch(setShowPhoto(sum));
-                  listenerApi.dispatch(setShowImg());
+                audioThinking.pause();
+                listenerApi.dispatch(setShowPhoto(sum));
+                listenerApi.dispatch(setShowImg());
 
                 if (sum !== null) {
                 listenerApi.dispatch(setOpenedPhotos(sum));

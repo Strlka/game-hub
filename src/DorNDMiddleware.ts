@@ -3,7 +3,7 @@ import { AppDispatch, RootState } from "./store";
 import { setShowPrize } from "./ReduxStateSlices/showPrizeSlice";
 import { resetShowOffer } from "./ReduxStateSlices/showOfferSlice";
 import { setShowCards } from "./ReduxStateSlices/showCardsSlice";
-import { playAudioSegment } from "./Audio";
+import { audioThinking, playAudioSegment } from "./Audio";
 
 export const onClickDeal = createAction('onClickDeal');
 export const onClickNoDeal = createAction('onClickNoDeal');
@@ -31,6 +31,7 @@ export const initDorNDMiddleware = () => {
                   } else {
                     listenerApi.dispatch(resetShowOffer()); 
                     listenerApi.dispatch(setShowCards());
+                    audioThinking.play();
                   }
             }
             });

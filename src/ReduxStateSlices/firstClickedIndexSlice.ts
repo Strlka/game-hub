@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
+import { audioThinking } from '../Audio';
 
 export interface firstClickedIndexState {
   value: number | null,
@@ -15,6 +16,7 @@ export const firstClickedIndexSlice = createSlice({
   reducers: {
     setFirstClickedIndex: (state, action: PayloadAction<number>) => {
         state.value = action.payload;
+        audioThinking.play();
     },
   }
 })
