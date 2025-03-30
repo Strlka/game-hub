@@ -1,7 +1,10 @@
 import { Box, Grid } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { audioMainTheme, playAudioSegment } from "../Audio";
+import { audioThinking, playAudioSegment, playAudioSegmentMainTheme } from "../Audio";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store";
+import { setFirstRender } from "../ReduxStateSlices/showCardsSlice";
 
 interface Props {
     clickedButtons: boolean[];
@@ -16,20 +19,35 @@ const CentralBoxes = ({clickedButtons, firstClickedIndex, sums, handleClick} : P
 
   const [visibleBoxes, setVisibleBoxes] = useState<number[]>([]);
 
+  const firstRender = useSelector((state: RootState) => state.showCards.firstRender);
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    const delay = 450; // Задержка между появлением каждого элемента
+
+    if (!firstRender) {
+        // ✅ Если анимация уже была, сразу показываем все боксы
+        setVisibleBoxes(boxPositionList.map((_, index) => index));
+        return;
+    }
+
+    // 🚀 Если первый запуск, запускаем анимацию
+
+    const delay = 250; // Задержка между появлением каждого элемента
+    playAudioSegmentMainTheme(0, 7, () => {
+      setTimeout(() => {
+        playAudioSegment(5, 8, () => {
+          setTimeout(() => {
+            audioThinking.play();
+          }, 500);
+        });
+    }, 500) // Небольшая задержка для корректного завершения
+    });
     boxPositionList.forEach((_, index) => {
         setTimeout(() => {
-            audioMainTheme.play();
-            setVisibleBoxes((prev) => [...prev, index]);
-            if (index === boxPositionList.length - 1) {
-              setTimeout(() => {
-                  audioMainTheme.pause();
-                  playAudioSegment(5, 8);
-              }, delay); // Небольшая задержка для корректного завершения
-          }
+          setVisibleBoxes((prev) => [...prev, index]);
         }, index * delay);
     });
+    dispatch(setFirstRender());
 }, []);
 
 
