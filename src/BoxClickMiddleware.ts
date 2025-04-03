@@ -6,7 +6,7 @@ import { setSums } from "./ReduxStateSlices/sumsSlice";
 import { setShowPhoto } from "./ReduxStateSlices/showPhotoSlice";
 import { setShowImg } from "./ReduxStateSlices/showImgSlice";
 import { setOpenedPhotos } from "./ReduxStateSlices/openedPhotosSlice";
-import { audioThinking } from "./Audio";
+import { audioThinking, playAudioSegmentCaseIsOpen } from "./Audio";
 
 export const initBoxClickMiddleware = () => {
     
@@ -41,6 +41,11 @@ export const initBoxClickMiddleware = () => {
           
                 if (sum !== null) {
                 listenerApi.dispatch(setOpenedPhotos(sum));
+                  if (sum >= 10000) {
+                    playAudioSegmentCaseIsOpen(0, 4);
+                  } else {
+                    playAudioSegmentCaseIsOpen(6, 7);
+                  }
                 }
                 listenerApi.dispatch(setClickedButtons(action.payload));
               } else if (sums.length === 2) {

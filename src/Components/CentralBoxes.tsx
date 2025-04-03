@@ -1,6 +1,6 @@
 import { Box, Grid } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { audioThinking, playAudioSegment, playAudioSegmentMainTheme } from "../Audio";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
@@ -16,23 +16,23 @@ interface Props {
 const MotionBox = motion(Box);
 
 const CentralBoxes = ({clickedButtons, firstClickedIndex, sums, handleClick} : Props) => {
-
   const [visibleBoxes, setVisibleBoxes] = useState<number[]>([]);
 
   const firstRender = useSelector((state: RootState) => state.showCards.firstRender);
   const dispatch = useDispatch();
 
   useEffect(() => {
-
     if (!firstRender) {
         // ✅ Если анимация уже была, сразу показываем все боксы
         setVisibleBoxes(boxPositionList.map((_, index) => index));
+
         return;
     }
 
     // 🚀 Если первый запуск, запускаем анимацию
 
     const delay = 250; // Задержка между появлением каждого элемента
+
     playAudioSegmentMainTheme(0, 7, () => {
       setTimeout(() => {
         playAudioSegment(5, 8, () => {
@@ -49,7 +49,6 @@ const CentralBoxes = ({clickedButtons, firstClickedIndex, sums, handleClick} : P
     });
     dispatch(setFirstRender());
 }, []);
-
 
     const boxPositionList = [
         {row: 1, colStart: 2},
@@ -94,7 +93,6 @@ const CentralBoxes = ({clickedButtons, firstClickedIndex, sums, handleClick} : P
               alignContent="center"
               h="100vh"
               position="relative"
-              
             >
               {boxPositionList.map(({ row, colStart }, index) => {
                 const isFirstClicked = firstClickedIndex === index;
@@ -105,7 +103,9 @@ const CentralBoxes = ({clickedButtons, firstClickedIndex, sums, handleClick} : P
                     as="button"
                     key={index}
                     onClick={() => handleClick(index)}
-                    pointerEvents={isClicked && !isFirstClicked ? "none" : "auto"}
+                    pointerEvents={
+                      isClicked && !isFirstClicked ? "none" : "auto"
+                    }
                     _disabled={{ opacity: 0.5, cursor: "not-allowed" }}
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={isVisible ? { opacity: 1, scale: 1 } : {}}

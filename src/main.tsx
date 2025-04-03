@@ -9,11 +9,11 @@ import { store } from "./store";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <Provider store={store}>
-  <React.StrictMode>
-    <ChakraProvider theme={theme}>
-      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-      <App />
-    </ChakraProvider>
-  </React.StrictMode>
+    <React.StrictMode>
+      <ChakraProvider theme={theme}>
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+        <App />
+      </ChakraProvider>
+    </React.StrictMode>
   </Provider>
 );
